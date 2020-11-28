@@ -11,39 +11,41 @@ const router = new Router({
 // Routes will go here
 router.get('/', async (ctx, next) => {
     // Fetch entries from Mongo left join categories
-    let entries = await ctx.db.collection('entries').aggregate([
+    let categories = await ctx.db.collection('categories').aggregate([
         {$lookup:
             {
-                as: 'category',
-                from: 'categories',
-                let: { 
-                    cate_id: "$category_id"
+                as: 'entries',
+                from: 'entries',
+                let: {
+                    cate_id: "$_id"
                  },
                  pipeline: [{
                     $match: {
                        $expr: {
-                          $eq: [ "$_id", "$$cate_id" ]
+                          $eq: [ "$category_id", "$$cate_id" ]
                        }
                     },
                  },
-                { $project: { _id: 0 } },
+                 { $project: { routine_id: 0 } },
             ]
             }},
-             {"$unwind":"$category"}
         ]).toArray();
-        
-    entries = await entries.map((entry) => {
-        entry.category = entry.category.name;
-        return entry
+
+    // Sum up amounts of each category
+    categories = await categories.map((category) => {
+        category.sum = category.entries.map( x => x.amount).reduce((sum, current) => {
+            return parseInt(sum) + parseInt(current);
+        }, 0);
+        return category
     });
 
     // Sum up all the entries
-    const total = entries.map( x => x.amount).reduce((sum, current) => {
+    const total = categories.map( x => x.sum).reduce((sum, current) => {
        return parseInt(sum) + parseInt(current);
     });
 
     let result = {
-        entries: entries,
+        categories: categories,
         total: total
     }
     ctx.body = result;
