@@ -15,7 +15,7 @@ new Vue({
     },
     mounted () {
         axios
-            .get('http://192.168.56.101:3000/books')
+            .get('http://192.168.56.101:3000/entries')
             .then(response => {
                 this.total = response.data.total;
                 return this.categories = response.data.categories;

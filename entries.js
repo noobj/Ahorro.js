@@ -1,14 +1,14 @@
-// books.js
+// entries.js
 
 const Router = require('koa-router');
 
 // Prefix all routes with: /books
 const router = new Router({
-    prefix: '/books'
+    prefix: '/entries'
 });
 
 
-// Routes will go here
+// Get the entries data from mongoDB and organize it.
 router.get('/', async (ctx, next) => {
     // Fetch entries from Mongo left join categories
     let categories = await ctx.db.collection('categories').aggregate([
@@ -19,17 +19,21 @@ router.get('/', async (ctx, next) => {
                 let: {
                     cate_id: "$_id"
                  },
-                 pipeline: [{
+                pipeline: [{
                     $match: {
-                       $expr: {
-                          $eq: [ "$category_id", "$$cate_id" ]
-                       }
+                        $expr: {
+                            $eq: [ "$category_id", "$$cate_id" ]
+                        }
                     },
-                 },
-                 { $project: { routine_id: 0 } },
-            ]
-            }},
-        ]).toArray();
+                }]
+            }
+        }
+    ]).toArray();
+
+    // Filter empty categories
+    categories = await categories.filter((category) => {
+        return category.entries.length != 0;
+    });
 
     // Sum up amounts of each category
     categories = await categories.map((category) => {
@@ -44,28 +48,12 @@ router.get('/', async (ctx, next) => {
        return parseInt(sum) + parseInt(current);
     });
 
+    // wrapping the response
     let result = {
         categories: categories,
         total: total
     }
     ctx.body = result;
-    next();
-});
-
-
-router.get('/:id', (ctx, next) => {
-    let getCurrentBook = books.filter(function(book) {
-        if (book.id == ctx.params.id) {
-            return true;
-        }
-    });
-
-    if (getCurrentBook.length) {
-        ctx.body = getCurrentBook[0];
-    } else {
-        ctx.response.status = 404;
-        ctx.body = 'Book Not Found';
-    }
     next();
 });
 
