@@ -1,5 +1,7 @@
 'use strict';
 
+// Script for loading ahorro.json file into mongoDB
+
 const fs = require('fs');
 const MongoClient = require('mongodb').MongoClient;
 const rawdata = fs.readFileSync('ahorro.json');
@@ -16,7 +18,7 @@ client.connect()
         let countInserted = 0;
         const worker = async function (data) {
                 const collection = db.collection('test1');
-                let a = await Promise.all(objs.tables[0].items.map((v) => {
+                await Promise.all(objs.tables[0].items.map((v) => {
                     return collection.insertOne(v)
                         .then(() => {
                             countInserted++;
@@ -24,7 +26,6 @@ client.connect()
                         })
                         .catch(err => {});
                 }));
-                console.log(a);
                 return countInserted;
         };
 
