@@ -1,11 +1,11 @@
 // app.js
 
 const Koa = require('koa');
-const koaBody = require('koa-body');
+const koaBody  = require('koa-body');
 const mongo = require("koa-mongo");
 
 // create app instance
-const app = new Koa();
+const app = module.exports = new Koa();
 const cors = require('@koa/cors');
 
 // Middleware for calculating the timespan of a request
@@ -31,5 +31,4 @@ let entries = require('./entries.js');
 
 // use the router here
 app.use(entries.routes());
-
-app.listen(3000);
+if(!module.parent) app.listen(3000);

@@ -1,10 +1,17 @@
 {
-  "name": "test",
+  "name": "Ahorro.js",
   "version": "1.0.0",
-  "description": "test",
+  "description": "Ahorro.js",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "docker run --workdir /usr/src/app -v ${PWD}:/usr/src/app --network=testnode_default --rm node npm run mocha",
+    "mocha": "mocha",
+    "dev": "nodemon app.js",
+    "development": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+    "watch": "npm run development -- --watch",
+    "hot": "cross-env NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js",
+    "prod": "npm run production",
+    "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
   },
   "author": "",
   "license": "ISC",
@@ -20,19 +27,14 @@
     "axios": "^0.21.0",
     "cross-env": "^7.0.2",
     "laravel-mix": "^5.0.9",
+    "mocha": "^8.2.1",
     "nodemon": "^2.0.6",
     "resolve-url-loader": "^3.1.0",
     "sass": "^1.29.0",
     "sass-loader": "^8.0.2",
+    "supertest": "^6.0.1",
     "vue": "^2.6.12",
-    "vue-template-compiler": "^2.6.12"
-  },
-  "scripts": {
-    "dev": "nodemon app.js",
-    "development": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
-    "watch": "npm run development -- --watch",
-    "hot": "cross-env NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js",
-    "prod": "npm run production",
-    "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
+    "vue-template-compiler": "^2.6.12",
+    "why-is-node-running": "^2.2.0"
   }
 }
