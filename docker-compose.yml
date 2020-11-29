@@ -6,6 +6,8 @@ services:
         image: nginx
         volumes: 
             - "./frontend:/usr/share/nginx/html:ro"
+        depends_on:
+            - "node"
 
     mongo:
         ports:
@@ -13,3 +15,13 @@ services:
         volumes:
             - "/home/jjj/mongoData:/data/db"
         image: mongo
+
+    node:
+        build: .
+        volumes:
+            - ./:/usr/src/app
+            - /usr/src/app/node_modules
+        ports:
+            - "3000:3000"
+        depends_on:
+            - "mongo"

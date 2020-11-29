@@ -18,7 +18,7 @@ app.use(async (ctx, next) => {
 
 app.use(cors());
 app.use(mongo({
-    uri: 'mongodb://localhost:27017/ahorro',
+    uri: 'mongodb://mongo:27017/ahorro',
     max: 100,
     min: 1
 }));
