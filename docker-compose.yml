@@ -1,0 +1,15 @@
+version: '3'
+services:
+    nginx:
+        ports: 
+            - "80:80"
+        image: nginx
+        volumes: 
+            - "./frontend:/usr/share/nginx/html:ro"
+
+    mongo:
+        ports:
+            - "27017:27017"
+        volumes:
+            - "/home/jjj/mongoData:/data/db"
+        image: mongo
