@@ -25,9 +25,11 @@ router.get('/', async (ctx, next) => {
                             $eq: [ "$category_id", "$$cate_id" ]
                         }
                     },
-                }]
+                },
+                { $project : { "date" : 1, amount: {$toInt: "$amount"}, descr: 1 }},
+                { $sort: { amount: -1}}]
             }
-        }
+        },
     ]).toArray();
 
     // Filter empty categories
@@ -35,13 +37,13 @@ router.get('/', async (ctx, next) => {
         return category.entries.length != 0;
     });
 
-    // Sum up amounts of each category
+    // Sum up amounts of each category and sort by the sum in descending order
     categories = await categories.map((category) => {
         category.sum = category.entries.map( x => x.amount).reduce((sum, current) => {
             return parseInt(sum) + parseInt(current);
         }, 0);
         return category
-    });
+    }).sort((a, b) => b.sum - a.sum);
 
     // Sum up all the entries
     const total = categories.map( x => x.sum).reduce((sum, current) => {
