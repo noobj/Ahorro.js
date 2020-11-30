@@ -1,8 +1,9 @@
 "use strict";
 
 const Router = require('koa-router');
+const moment = require('moment');
 
-// Prefix all routes with: /books
+// Prefix all routes with: /entries
 const router = new Router({
     prefix: '/entries'
 });
@@ -10,6 +11,14 @@ const router = new Router({
 
 // Get the entries data from mongoDB and organize it.
 router.get('/', async (ctx, next) => {
+
+    // Check the format of the input date range, if failed set by default
+    let timeStartInput = moment(ctx.request.query.start, 'YYYY-MM-DD', true).isValid() ? ctx.request.query.start : false;
+    let timeEndInput = moment(ctx.request.query.end, 'YYYY-MM-DD', true).isValid() ? ctx.request.query.end : false;
+    // Set the time range
+    let timeStart = timeStartInput || moment().day(-90).toISOString();
+    let timeEnd = timeEndInput || moment().day(0).toISOString();
+
     // Fetch entries from Mongo left join categories
     let categories = await ctx.db.collection('categories').aggregate([
         {$lookup:
@@ -22,11 +31,11 @@ router.get('/', async (ctx, next) => {
                 pipeline: [{
                     $match: {
                         $expr: {
-                            $eq: [ "$category_id", "$$cate_id" ]
+                            $and: [ { $gte: [ "$date", timeStart ] }, { $lte: [ "$date", timeEnd ] }, { $eq: [ "$category_id", "$$cate_id" ] } ]
                         }
                     },
                 },
-                { $project : { "date" : 1, amount: {$toInt: "$amount"}, descr: 1 }},
+                { $project : { _id: 0 }},
                 { $sort: { amount: -1}}]
             }
         },

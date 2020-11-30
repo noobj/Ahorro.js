@@ -9,7 +9,7 @@ const rawdata = fs.readFileSync('ahorro.json');
 let objs = JSON.parse(rawdata);
 
 const url = 'mongodb://localhost:27017';
-const dbName = 'test';
+const dbName = 'ahorro';
 const client = new MongoClient(url, {});
 client.connect()
     .then(async (connectedClient) => {
@@ -17,8 +17,10 @@ client.connect()
         const db = client.db(dbName);
         let countInserted = 0;
         const worker = async function (data) {
-                const collection = db.collection('test1');
+                const collection = db.collection('entries');
                 await Promise.all(objs.tables[0].items.map((v) => {
+                    v._id = parseInt(v._id);
+                    v.amount = parseInt(v.amount);
                     return collection.insertOne(v)
                         .then(() => {
                             countInserted++;

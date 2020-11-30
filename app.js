@@ -22,7 +22,7 @@ let mongoMin = 1;
 if(module.parent) mongoMin = 0;
 
 app.use(mongo({
-  uri: 'mongodb://localhost:27017/ahorro',
+  uri: 'mongodb://mongo:27017/ahorro',
   max: 100,
   min: mongoMin
 }));
