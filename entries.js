@@ -1,4 +1,4 @@
-// entries.js
+"use strict";
 
 const Router = require('koa-router');
 
@@ -56,6 +56,7 @@ router.get('/', async (ctx, next) => {
         total: total
     }
     ctx.body = result;
+    ctx.mongo.close();
     next();
 });
 

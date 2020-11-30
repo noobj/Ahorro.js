@@ -1,10 +1,8 @@
-// app.js
+"use strict";
 
 const Koa = require('koa');
-const koaBody  = require('koa-body');
+const koaBody = require('koa-body');
 const mongo = require("koa-mongo");
-
-// create app instance
 const app = module.exports = new Koa();
 const cors = require('@koa/cors');
 
@@ -14,21 +12,22 @@ app.use(async (ctx, next) => {
     await next();
     const ms = Date.now() - start;
     ctx.set('X-Response-Time', `${ms}ms`);
-  });
+});
 
 app.use(cors());
-app.use(mongo({
-    uri: 'mongodb://mongo:27017/ahorro',
-    max: 100,
-    min: 1
-}));
-
-// middleware functions
 app.use(koaBody());
 
-// Require the router here
-let entries = require('./entries.js');
+// Set up mongo minimal pool connections, set 0 for testing mode so the test script can be terminated.
+let mongoMin = 1;
+if(module.parent) mongoMin = 0;
 
-// use the router here
+app.use(mongo({
+  uri: 'mongodb://localhost:27017/ahorro',
+  max: 100,
+  min: mongoMin
+}));
+
+let entries = require('./entries.js');
 app.use(entries.routes());
+
 if(!module.parent) app.listen(3000);

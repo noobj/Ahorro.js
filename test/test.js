@@ -1,3 +1,5 @@
+"use strict";
+
 const app = require('../app');
 const server = app.listen();
 const request = require('supertest').agent(server);
@@ -10,6 +12,6 @@ describe('Hello World', function() {
     it('should say "Hello World"', function(done) {
         request
         .get('/entries')
-        .expect(200, done())
+        .expect(200, done)
     });
 });
