@@ -1,6 +1,6 @@
 <template>
     <div>
-        <li v-for="entry in entries"> ${{ entry.amount }} - {{ entry.date }} {{ entry.descr }}</li>
+        <li :key="entry._id" v-for="entry in entries"> ${{ entry.amount }} - {{ entry.date }} {{ entry.descr }}</li>
     </div>
 </template>
   

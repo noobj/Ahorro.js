@@ -1,5 +1,12 @@
+<head>
+    <link rel="icon"
+      type="image/png"
+      href="./favicon-96x96.png">
+</head>
 <div id="app">
     <h2>Total: ${{ total }}</h2>
+    Start: <input type="date" name="start" v-model="start" @change="getEntries()"/>
+    End: <input type="date" name="end" v-model="end" @change="getEntries()"/>
     <Category v-for="category in categories" :key="category._id" :category="category" :total="total"></Category>
 </div>
 
