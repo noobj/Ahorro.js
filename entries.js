@@ -16,8 +16,8 @@ router.get('/', async (ctx, next) => {
     let timeStartInput = moment(ctx.request.query.start, 'YYYY-MM-DD', true).isValid() ? ctx.request.query.start : false;
     let timeEndInput = moment(ctx.request.query.end, 'YYYY-MM-DD', true).isValid() ? ctx.request.query.end : false;
     // Set the time range
-    let timeStart = timeStartInput || moment().day(-90).toISOString();
-    let timeEnd = timeEndInput || moment().day(0).toISOString();
+    let timeStart = timeStartInput || moment().add(-90, 'days').toISOString();
+    let timeEnd = timeEndInput || moment().add(0, 'days').toISOString();
 
     // Fetch entries from Mongo left join categories
     let categories = await ctx.db.collection('categories').aggregate([
@@ -57,7 +57,7 @@ router.get('/', async (ctx, next) => {
     // Sum up all the entries
     const total = categories.map( x => x.sum).reduce((sum, current) => {
        return parseInt(sum) + parseInt(current);
-    });
+    }, 0);
 
     // wrapping the response
     let result = {
