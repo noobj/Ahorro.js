@@ -3,7 +3,7 @@
 const Koa = require('koa');
 const koaBody = require('koa-body');
 const mongo = require("koa-mongo");
-const app = module.exports = new Koa();
+const app = new Koa();
 const cors = require('@koa/cors');
 
 const graphqlHTTP = require('koa-graphql');
@@ -43,3 +43,6 @@ process.on('SIGTERM', () => {
     closeDB();
     koaServer.close();
   })
+
+
+module.exports = {app, initDB, closeDB};
