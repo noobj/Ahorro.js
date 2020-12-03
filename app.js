@@ -3,8 +3,13 @@
 const Koa = require('koa');
 const koaBody = require('koa-body');
 const mongo = require("koa-mongo");
-const app = module.exports = new Koa();
+const app = new Koa();
 const cors = require('@koa/cors');
+
+const { ApolloServer } = require('apollo-server-koa');
+const { initDB, closeDB } = require('./model/entryFunctions');
+const typeDefs = require('./graphql/entryType');
+const resolvers = require('./graphql/resolver');
 
 // Middleware for calculating the timespan of a request
 app.use(async (ctx, next) => {
@@ -17,17 +22,22 @@ app.use(async (ctx, next) => {
 app.use(cors());
 app.use(koaBody());
 
-// Set up mongo minimal pool connections, set 0 for testing mode so the test script can be terminated.
-let mongoMin = 1;
-if(module.parent) mongoMin = 0;
+const server = new ApolloServer ({
+    typeDefs,
+    resolvers
+});
 
-app.use(mongo({
-  uri: 'mongodb://mongo:27017/ahorro',
-  max: 100,
-  min: mongoMin
-}));
+app.use(server.getMiddleware());
 
-let entries = require('./entries.js');
-app.use(entries.routes());
+let koaServer;
+if (!module.parent) koaServer = app.listen(3000, () => {
+    console.log(`listening....at path ${server.graphqlPath}`);
+    initDB();
+});
 
-if(!module.parent) app.listen(3000);
+process.on('SIGTERM', () => {
+    closeDB();
+    koaServer.close();
+  })
+
+module.exports = {app, initDB, closeDB};
