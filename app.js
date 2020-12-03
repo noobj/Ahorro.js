@@ -6,7 +6,10 @@ const mongo = require("koa-mongo");
 const app = new Koa();
 const cors = require('@koa/cors');
 
-const graphqlHTTP = require('koa-graphql');
+const { ApolloServer } = require('apollo-server-koa');
+const { initDB, closeDB } = require('./model/entryFunctions');
+const typeDefs = require('./graphql/entryType');
+const resolvers = require('./graphql/resolver');
 
 // Middleware for calculating the timespan of a request
 app.use(async (ctx, next) => {
@@ -19,17 +22,10 @@ app.use(async (ctx, next) => {
 app.use(cors());
 app.use(koaBody());
 
-const { ApolloServer } = require('apollo-server-koa');
-const { initDB, closeDB } = require('./model/entryFunctions');
-const typeDefs = require('./graphql/entryType');
-const resolvers = require('./graphql/resolver');
-
-const server = new ApolloServer (
-    {
-      typeDefs,
-      resolvers
+const server = new ApolloServer ({
+    typeDefs,
+    resolvers
 });
-
 
 app.use(server.getMiddleware());
 
@@ -43,6 +39,5 @@ process.on('SIGTERM', () => {
     closeDB();
     koaServer.close();
   })
-
 
 module.exports = {app, initDB, closeDB};

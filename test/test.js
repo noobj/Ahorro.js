@@ -4,7 +4,6 @@ const should = require('chai').should();
 const server = app.listen();
 const request = require('supertest').agent(server);
 
-
 describe('Hello World', function() {
     /**
      * Needs to use async function or the result could be wrong.

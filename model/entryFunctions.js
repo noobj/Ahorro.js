@@ -7,7 +7,6 @@ const moment = require('moment');
 const client  = new MongoClient("'mongodb://localhost:27017/", { useNewUrlParser: true, useUnifiedTopology: true  })
 let db  =  null;
 
-
 async function initDB() {
   if (!db)
   {
