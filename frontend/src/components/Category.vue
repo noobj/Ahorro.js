@@ -1,31 +1,34 @@
 <template>
   <div>
-    <h3 @click="toggle = !toggle"> {{ category._id }}. {{ category.name }} - {{ calculatePercentage }}%    ${{ category.sum }}</h3>
+    <h4 @click="toggle = !toggle">
+      {{ category._id }}. {{ category.name }} - {{ calculatePercentage }}%
+      {{ category.sum | toCurrency }}
+    </h4>
     <Entries v-if="toggle" :entries="category.entries"></Entries>
   </div>
 </template>
 
 <script>
-  import Entries from './Entries.vue';
+import Entries from "./Entries.vue";
 
-  export default {
-    name: "Category",
-    components: {
-      Entries
+export default {
+  name: "Category",
+  components: {
+    Entries,
+  },
+  props: {
+    category: Object,
+    total: Number,
+  },
+  computed: {
+    calculatePercentage: function () {
+      return ((this.category.sum / this.total) * 100).toFixed(2);
     },
-    props: {
-      category: Object,
-      total: Number
-    },
-    computed: {
-      calculatePercentage: function () {
-        return  (this.category.sum / this.total * 100).toFixed(2);
-      }
-    },
-    data: () => {
-      return {
-        toggle: false,
-      }
-    }
-  }
+  },
+  data: () => {
+    return {
+      toggle: false,
+    };
+  },
+};
 </script>

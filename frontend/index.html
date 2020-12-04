@@ -1,13 +1,23 @@
 <head>
-    <link rel="icon"
-      type="image/png"
-      href="./favicon-96x96.png">
+    <link rel="icon" type="image/png" href="./favicon-96x96.png">
+    <link rel="stylesheet" href="dist/app.css">
 </head>
 <div id="app">
-    <h2>Total: ${{ total }}</h2>
-    Start: <input type="date" name="start" v-model="start" />
-    End: <input type="date" name="end" v-model="end" />
+    <h1>Total: {{ total|toCurrency }}</h1>
+    <div>
+        Start:
+        <input v-model="start" type="text" placeholder="YYYY-MM-DD" autocomplete="off" />
+        <b-form-datepicker button-only name="start" v-model="start" class="mb-2" />
+    </div>
+    <div>
+        End:
+        <input v-model="end" type="text" placeholder="YYYY-MM-DD" autocomplete="off" />
+        <b-form-datepicker button-only name="end" v-model="end" class="mb-2" />
+    </div>
     <h1 v-if="$apollo.loading">Loading...</h1>
+    <div style="max-width: 600px; margin: 75px; float: left;">
+        <Chart :chart-data="datacollection"></Chart>
+    </div>
     <Category v-for="category in categories" :key="category._id" :category="category" :total="total"></Category>
 </div>
 
