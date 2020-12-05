@@ -73,9 +73,14 @@ async function getCategorySummary(root, {timeStartInput, timeEndInput}) {
     }).sort((a, b) => b.sum - a.sum);
 
     // Sum up all the entries
-    const total = categories.map(x => x.sum).reduce((sum, current) => {
+    const total = await categories.map(x => x.sum).reduce((sum, current) => {
         return parseInt(sum) + parseInt(current);
     }, 0);
+
+    categories = await categories.map((category) => {
+        category.percentage = ((category.sum / total) * 100).toFixed(2);
+        return category;
+    });
 
     // wrapping the response
     let result = {

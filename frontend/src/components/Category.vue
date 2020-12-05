@@ -1,7 +1,7 @@
 <template>
   <div>
-    <h4 @click="toggle = !toggle">
-      {{ category._id }}. {{ category.name }} - {{ calculatePercentage }}%
+    <h4 :style="{ color: category.color }" @click="toggle = !toggle">
+      {{ category.name }} - {{ category.percentage }}%
       {{ category.sum | toCurrency }}
     </h4>
     <Entries v-if="toggle" :entries="category.entries"></Entries>
@@ -22,7 +22,8 @@ export default {
   },
   computed: {
     calculatePercentage: function () {
-      return ((this.category.sum / this.total) * 100).toFixed(2);
+      console.log(this.category);
+      return this.category.color;
     },
   },
   data: () => {

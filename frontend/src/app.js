@@ -42,16 +42,7 @@ new Vue({
             total: 0,
             start:  moment().add(-90, 'days').format('YYYY-MM-DD'),
             end: moment().add(0, 'days').format('YYYY-MM-DD'),
-            datacollection: {
-                labels: [1,2,3,4,5,6,7,8,9,10,11,12],
-                datasets: [
-                    {
-                        label: 'Data One',
-                        backgroundColor: '#f87979',
-                        data: [1,2,3,4,5,6,7,8,9,10,11,12]
-                    }
-                ]
-            }
+            datacollection: {}
         }
     },
     apollo: {
@@ -64,6 +55,7 @@ new Vue({
                     categories {
                         name
                         sum
+                        percentage
                         entries {
                             amount
                             date
@@ -80,20 +72,42 @@ new Vue({
                 timeEndInput: this.end
             };
           },
-          result (result) {
-            this.datacollection = {
-                labels: [1,1,1,4,5,6,1,1,1,10,11,12],
+          async result (result) {
+            this.categories = await result.data.entriesWithinCategories.categories;
+            this.total = result.data.entriesWithinCategories.total;
+
+            let categoryNames = this.categories.map(v => v.name);
+            let categoryPercent = this.categories.map(v => v.percentage);
+            let randomColors = await this.randomColors(categoryNames.length);
+
+            this.categories = await this.categories.map((category, index) => {
+                // Need to use Vue.set since Vue doesn't detect object property addition
+                Vue.set(category, 'color', randomColors[index]);
+                return category;
+            });
+
+            return this.datacollection = {
+                labels: categoryNames,
                 datasets: [
                     {
                         label: 'Data One',
-                        backgroundColor: '#f87979',
-                        data: [1,2,3,4,5,6,7,8,9,10,11,12]
+                        backgroundColor: randomColors,
+                        data: categoryPercent
                     }
                 ]
             };
-            this.categories = result.data.entriesWithinCategories.categories;
-            return this.total = result.data.entriesWithinCategories.total;
           }
         }}
+    },
+    methods: {
+        randomColors: function (size) {
+            let result = [];
+            for(let i = 0; i < size ; i++) {
+                let color = '#' + Math.floor(Math.random()*16777215).toString(16);
+                result.push(color);
+            }
+
+            return result;
+        }
     }
 })
