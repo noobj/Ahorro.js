@@ -15,7 +15,8 @@ const typeDefs = gql`
         _id: Int,
         name: String,
         entries: [Entry],
-        sum: Int
+        sum: Int,
+        percentage: Float
     }
 
     type Entry {
