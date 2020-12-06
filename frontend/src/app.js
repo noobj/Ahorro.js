@@ -42,7 +42,9 @@ new Vue({
             total: 0,
             start:  moment().add(-90, 'days').format('YYYY-MM-DD'),
             end: moment().add(0, 'days').format('YYYY-MM-DD'),
-            datacollection: {}
+            datacollection: {},
+            randomColorsArr: null,
+            entriesSortByDate: false
         }
     },
     apollo: {
@@ -50,8 +52,8 @@ new Vue({
         entriesWithinCategories() {
             return {
          query: gql`
-            query entriesWithinCategories($timeStartInput: String!, $timeEndInput: String!){
-                entriesWithinCategories(timeStartInput: $timeStartInput, timeEndInput: $timeEndInput) {
+            query entriesWithinCategories($timeStartInput: String!, $timeEndInput: String!, $entriesSortByDate: Boolean){
+                entriesWithinCategories(timeStartInput: $timeStartInput, timeEndInput: $timeEndInput, entriesSortByDate: $entriesSortByDate) {
                     categories {
                         name
                         sum
@@ -69,7 +71,8 @@ new Vue({
           variables () {
             return {
                 timeStartInput: this.start,
-                timeEndInput: this.end
+                timeEndInput: this.end,
+                entriesSortByDate: this.entriesSortByDate
             };
           },
           async result (result) {
@@ -78,24 +81,26 @@ new Vue({
 
             let categoryNames = this.categories.map(v => v.name);
             let categoryPercent = this.categories.map(v => v.percentage);
-            let randomColors = await this.randomColors(categoryNames.length);
 
-            this.categories = await this.categories.map((category, index) => {
+            if(this.randomColorsArr === null) {
+                this.randomColorsArr = await this.randomColors(categoryNames.length);
+                this.datacollection = {
+                    labels: categoryNames,
+                    datasets: [
+                        {
+                            label: 'Data One',
+                            backgroundColor: this.randomColorsArr,
+                            data: categoryPercent
+                        }
+                    ]
+                };
+            }
+
+            return this.categories = this.categories.map((category, index) => {
                 // Need to use Vue.set since Vue doesn't detect object property addition
-                Vue.set(category, 'color', randomColors[index]);
+                Vue.set(category, 'color', this.randomColorsArr[index]);
                 return category;
             });
-
-            return this.datacollection = {
-                labels: categoryNames,
-                datasets: [
-                    {
-                        label: 'Data One',
-                        backgroundColor: randomColors,
-                        data: categoryPercent
-                    }
-                ]
-            };
           }
         }}
     },
