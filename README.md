@@ -28,6 +28,8 @@
 
 <img src="https://www.marketersgo.com/wp-content/uploads/2017/12/DGcovery_%E5%85%8D%E8%B2%BB%E8%A8%98%E5%B8%B3APP%E6%8E%A8%E8%96%A6_Ahorro1.png">
 
+![Display](./display.png)
+
 * Fetch the backup file from your phone and insert into MongoDB.
 * Show the customized report and entries summary based on MKVN and GraphQL.
 * Makes bookkeeping report clean and useful.
