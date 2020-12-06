@@ -1,16 +1,17 @@
 <head>
     <link rel="icon" type="image/png" href="./favicon-96x96.png">
     <link rel="stylesheet" href="dist/app.css">
+    <title>Ahorro.js</title>
 </head>
 <div id="app">
 
-    <div>
-        Start:
+    <div style="float: left;">
+
         <input v-model="start" type="text" placeholder="YYYY-MM-DD" autocomplete="off" />
         <b-form-datepicker button-only name="start" v-model="start" class="mb-2" />
     </div>
+    <font face = "Comic sans MS" size = "5" style="float: left; font-weight:bold;">&nbsp;&raquo;&nbsp;</font>
     <div>
-        End:
         <input v-model="end" type="text" placeholder="YYYY-MM-DD" autocomplete="off" />
         <b-form-datepicker button-only name="end" v-model="end" class="mb-2" />
     </div>
