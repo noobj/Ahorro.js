@@ -4,19 +4,19 @@
     <title>Ahorro.js</title>
 </head>
 <div id="app">
-
-    <div style="float: left;">
-
-        <input v-model="start" type="text" placeholder="YYYY-MM-DD" autocomplete="off" />
-        <b-form-datepicker button-only name="start" v-model="start" class="mb-2" />
+    <div style="display: inline-block;">
+        <div style="float: left;">
+            <input v-model="start" type="text" placeholder="YYYY-MM-DD" autocomplete="off" />
+            <b-form-datepicker button-only name="start" v-model="start" class="mb-2" />
+        </div>
+        <font face = "Comic sans MS" size = "5" style="float: left; font-weight:bold;">&nbsp;&raquo;&nbsp;</font>
+        <div style="float: left;">
+            <input v-model="end" type="text" placeholder="YYYY-MM-DD" autocomplete="off" />
+            <b-form-datepicker button-only name="end" v-model="end" class="mb-2" />
+        </div>
+        <font size = "4" style="float: left; font-weight:bold;">&nbsp;SortBy:&nbsp;</font>
+        <b-button size="sm" pill variant="warning" @click="entriesSortByDate = !entriesSortByDate" style="font-weight:bold;">{{ entriesSortByDate ? 'Date' : 'Amount' }}</b-button>
     </div>
-    <font face = "Comic sans MS" size = "5" style="float: left; font-weight:bold;">&nbsp;&raquo;&nbsp;</font>
-    <div style="float: left;">
-        <input v-model="end" type="text" placeholder="YYYY-MM-DD" autocomplete="off" />
-        <b-form-datepicker button-only name="end" v-model="end" class="mb-2" />
-    </div>
-    <font size = "5" style="float: left; font-weight:bold;">&nbsp;SortBy:&nbsp;</font>
-    <b-button pill variant="warning" @click="entriesSortByDate = !entriesSortByDate" style="font-weight:bold;">{{ entriesSortByDate ? 'Date' : 'Amount' }}</b-button>
     <h1>Total: {{ total|toCurrency }}</h1>
     <h1 v-if="$apollo.loading">Loading...</h1>
     <div style="max-width: 600px; margin: 75px; float: left;">
