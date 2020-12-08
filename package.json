@@ -23,6 +23,7 @@
     "bootstrap": "^4.5.3",
     "bootstrap-vue": "^2.20.1",
     "chart.js": "^2.9.4",
+    "googleapis": "^66.0.0",
     "graphql": "^15.4.0",
     "koa": "^2.13.0",
     "koa-body": "^4.2.0",
