@@ -5,3 +5,5 @@ package-lock.json
 */dist
 mix-manifest.json
 webpack.mix.js
+credentials.json
+token.json
