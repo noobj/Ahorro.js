@@ -1,10 +1,13 @@
 "use strict";
-
+const fs = require('fs');
 const Koa = require('koa');
 const koaBody = require('koa-body');
 const mongo = require("koa-mongo");
 const app = new Koa();
 const cors = require('@koa/cors');
+const https = require('https');
+
+const Logger = require('koa-logger');
 
 const { ApolloServer } = require('apollo-server-koa');
 const { initDB, closeDB } = require('./model/entryFunctions');
@@ -21,23 +24,50 @@ app.use(async (ctx, next) => {
 
 app.use(cors());
 app.use(koaBody());
+app.use(Logger());
 
-const server = new ApolloServer ({
+let router = require('./loadGoogleDriveRoute.js');
+
+app.use(router.routes()).use(router.allowedMethods());;
+
+const server = new ApolloServer({
     typeDefs,
     resolvers
 });
 
 app.use(server.getMiddleware());
 
-let koaServer;
-if (!module.parent) koaServer = app.listen(3000, () => {
-    console.log(`listening....at path ${server.graphqlPath}`);
-    initDB();
-});
+let httpsConfig = {
+    port: 3000,
+    options: {
+        key: fs.readFileSync('/https/nginx.key', 'utf8').toString(),
+        cert: fs.readFileSync('/https/nginx.crt', 'utf8').toString(),
+    },
+}
+
+
+if (!module.parent) {
+    try {
+        var httpsServer = https.createServer(httpsConfig.options, app.callback());
+        httpsServer
+            .listen(httpsConfig.port, function (err) {
+                if (!!err) {
+                    console.error('HTTPS server FAIL: ', err, (err && err.stack));
+                }
+                else {
+                    console.log(`HTTPS server OK`);
+                    initDB();
+                }
+            });
+    }
+    catch (ex) {
+        console.error('Failed to start HTTPS server\n', ex, (ex && ex.stack));
+    }
+}
 
 process.on('SIGTERM', () => {
     closeDB();
-    koaServer.close();
-  })
+    httpsServer.close();
+})
 
-module.exports = {app, initDB, closeDB};
+module.exports = { app, initDB, closeDB };

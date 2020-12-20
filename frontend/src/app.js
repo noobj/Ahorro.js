@@ -19,7 +19,7 @@ Vue.filter('toCurrency', function (value) {
 
 import ApolloClient from 'apollo-boost'
 const apolloClient = new ApolloClient({
-  uri: 'http://192.168.56.101:3000/graphql'
+  uri: 'https://node:3000/graphql'
 });
 
 import VueApollo from 'vue-apollo'
