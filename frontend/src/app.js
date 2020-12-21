@@ -2,6 +2,7 @@ import Vue from 'vue';
 import moment from 'moment';
 import Category from './components/Category';
 import Chart from './components/Chart';
+import axios from 'axios';
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 
 Vue.use(BootstrapVue);
@@ -19,7 +20,7 @@ Vue.filter('toCurrency', function (value) {
 
 import ApolloClient from 'apollo-boost'
 const apolloClient = new ApolloClient({
-  uri: 'https://node:3000/graphql'
+  uri: 'https://192.168.56.101:3000/graphql'
 });
 
 import VueApollo from 'vue-apollo'
@@ -105,6 +106,16 @@ new Vue({
         }}
     },
     methods: {
+        loadNewData: function() {
+            return axios
+            .get('https://192.168.56.101:3000/load')
+            .then(res => {
+                window.open(res.data);
+            })
+            .catch(err => {
+                alert('something wrong.');
+            })
+        },
         randomColors: function (size) {
             let result = [];
             for(let i = 0; i < size ; i++) {
