@@ -3,7 +3,7 @@ const { ApolloServer, gql } = require('apollo-server-koa');
 
 const typeDefs = gql`
     type Query  {
-        entriesWithinCategories(timeStartInput: String, timeEndInput: String, entriesSortByDate: Boolean): EntryCateSummary
+        entriesWithinCategories(timeStartInput: String, timeEndInput: String, entriesSortByDate: Boolean, categoriesExclude: [String]): EntryCateSummary
     }
 
     type EntryCateSummary {

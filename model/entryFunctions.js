@@ -31,7 +31,7 @@ function closeDB() {
   }
 
 // Get the entries data from mongoDB and organize it.
-async function getCategorySummary(root, {timeStartInput, timeEndInput, entriesSortByDate}) {
+async function getCategorySummary(root, {timeStartInput, timeEndInput, entriesSortByDate, categoriesExclude}) {
     // Set the time range, if the date format is wrong then get the previous 3 months
     let timeStart = moment(timeStartInput, 'YYYY-MM-DD', true).isValid() ? timeStartInput : moment().add(-90, 'days').toISOString();
     let timeEnd = moment(timeEndInput, 'YYYY-MM-DD', true).isValid() ?timeEndInput : moment().add(0, 'days').toISOString();
@@ -43,6 +43,10 @@ async function getCategorySummary(root, {timeStartInput, timeEndInput, entriesSo
     let sort = {};
     sort[sortByWhichColumn] = -1;
 
+    let andCondition = [{ $gte: ["$date", timeStart] }, { $lte: ["$date", timeEnd] }, { $eq: ["$category_id", "$$cate_id"] }];
+    andCondition = andCondition.concat(categoriesExclude.map(x => {
+        return {$ne: ["$category_id", x]};
+    }));
     // Fetch entries from Mongo left join categories
     let categories = await db.collection('categories').aggregate([
         {
@@ -56,7 +60,7 @@ async function getCategorySummary(root, {timeStartInput, timeEndInput, entriesSo
                 pipeline: [{
                     $match: {
                         $expr: {
-                            $and: [{ $gte: ["$date", timeStart] }, { $lte: ["$date", timeEnd] }, { $eq: ["$category_id", "$$cate_id"] }]
+                            $and: andCondition
                         }
                     },
                 },

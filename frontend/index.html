@@ -23,7 +23,7 @@
     <div style="max-width: 600px; margin: 75px; float: left;">
         <Chart :chart-data="datacollection"></Chart>
     </div>
-    <Category v-for="category in categories" :key="category._id" :category="category" :total="total"></Category>
+    <Category @exclude-category="excludeCategory" v-for="category in categories" :key="category._id" :category="category" :total="total"></Category>
 </div>
 
 <script src="dist/app.js"></script>
