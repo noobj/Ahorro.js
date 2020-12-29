@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "docker run --workdir /usr/src/app -v ${PWD}:/usr/src/app --network=testnode_default --rm node npm run mocha",
+    "jest": "jest --coverage",
     "mocha": "mocha",
     "dev": "nodemon app.js",
     "development": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
@@ -38,8 +39,10 @@
     "vue-chartjs": "^3.5.1"
   },
   "devDependencies": {
+    "@shelf/jest-mongodb": "^1.2.3",
     "chai": "^4.2.0",
     "cross-env": "^7.0.2",
+    "jest": "^26.6.3",
     "laravel-mix": "^5.0.9",
     "mocha": "^8.2.1",
     "nodemon": "^2.0.6",

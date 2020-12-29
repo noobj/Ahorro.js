@@ -1,0 +1,46 @@
+[{
+  "_id": "1",
+  "name": "Breakfast"
+},{
+  "_id": "2",
+  "name": "Lunch"
+},{
+  "_id": "3",
+  "name": "Dinner"
+},{
+  "_id": "4",
+  "name": "Beverage"
+},{
+  "_id": "5",
+  "name": "Snack"
+},{
+  "_id": "6",
+  "name": "Traffic"
+},{
+  "_id": "7",
+  "name": "Grocery"
+},{
+  "_id": "8",
+  "name": "Entertainment"
+},{
+  "_id": "9",
+  "name": "Investment"
+},{
+  "_id": "10",
+  "name": "Cloth"
+},{
+  "_id": "15",
+  "name": "Medical"
+},{
+  "_id": "16",
+  "name": "phone"
+},{
+  "_id": "26",
+  "name": "Training"
+},{
+  "_id": "27",
+  "name": "3C"
+},{
+  "_id": "28",
+  "name": "Cash Gift"
+}]

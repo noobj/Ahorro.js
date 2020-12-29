@@ -4,30 +4,35 @@ const MongoClient = require('mongodb').MongoClient
 const { UserInputError } = require('apollo-server-koa');
 const moment = require('moment');
 
-const client  = new MongoClient("'mongodb://mongo:27017/", { useNewUrlParser: true, useUnifiedTopology: true  })
+let client = null;
 let db  =  null;
 
-async function initDB() {
+async function initDB(url) {
   if (!db)
   {
+    url = url ? url : "mongodb://mongo:27017/";
+    client  = new MongoClient(url, { useNewUrlParser: true, useUnifiedTopology: true  });
     db = await new Promise( (resolve, reject) =>
       client.connect((err) =>
       {
         if (err)
           return reject(err)
-        let database = client.db('ahorro')
+        let database = client.db('ahorro');
         resolve (database);
      })
    ).catch(e => {
-      console.log('Could not get connection to MongoDB..\n' + e)
-      process.exit(1)
+      console.log('Could not get connection to MongoDB..\n' + e);
     })
   }
+
+  return db;
 }
 
-function closeDB() {
-    if (db)
-      client.close()
+async function closeDB() {
+    if (db) {
+      await client.close()
+      await db.close();
+    }
   }
 
 // Get the entries data from mongoDB and organize it.
@@ -35,6 +40,7 @@ async function getCategorySummary(root, {timeStartInput, timeEndInput, entriesSo
     // Set the time range, if the date format is wrong then get the previous 3 months
     let timeStart = moment(timeStartInput, 'YYYY-MM-DD', true).isValid() ? timeStartInput : moment().add(-90, 'days').toISOString();
     let timeEnd = moment(timeEndInput, 'YYYY-MM-DD', true).isValid() ?timeEndInput : moment().add(0, 'days').toISOString();
+    categoriesExclude = categoriesExclude ? categoriesExclude : [];
 
     // Used for deciding sort by which column, amount by default
     let sortByWhichColumn = "amount";

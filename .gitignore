@@ -8,3 +8,4 @@ webpack.mix.js
 credentials.json
 token.json
 /https
+globalConfig.json

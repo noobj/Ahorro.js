@@ -1,0 +1,22 @@
+
+> Ahorro.js@1.0.0 jest /home/jjj/Code/ahorroJS
+> jest --coverage
+
+PASS test/model.test.js
+  insert
+    ✓ should insert a doc into collection (4 ms)
+
+-------------------|---------|----------|---------|---------|-------------------
+File               | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
+-------------------|---------|----------|---------|---------|-------------------
+All files          |   31.91 |    21.43 |      20 |   34.09 |                   
+ entryFunctions.js |   31.91 |    21.43 |      20 |   34.09 | 19,24-25,33-105   
+-------------------|---------|----------|---------|---------|-------------------
+Test Suites: 1 passed, 1 total
+Tests:       1 passed, 1 total
+Snapshots:   0 total
+Time:        1.45 s, estimated 2 s
+Ran all test suites.
+Jest did not exit one second after the test run has completed.
+
+This usually means that there are asynchronous operations that weren't stopped in your tests. Consider running Jest with `--detectOpenHandles` to troubleshoot this issue.
