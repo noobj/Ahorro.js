@@ -7,7 +7,7 @@ const app = new Koa();
 const cors = require('@koa/cors');
 const https = require('https');
 
-const Logger = require('koa-logger');
+const Logger = require('./logger');
 
 const { ApolloServer } = require('apollo-server-koa');
 const { initDB, closeDB } = require('./model/entryFunctions');
