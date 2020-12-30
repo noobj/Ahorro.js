@@ -4,8 +4,8 @@
   "description": "Ahorro.js",
   "main": "index.js",
   "scripts": {
-    "test": "docker run --workdir /usr/src/app -v ${PWD}:/usr/src/app --network=testnode_default --rm node npm run mocha",
-    "jest": "jest --coverage",
+    "docker-test": "docker run --workdir /usr/src/app -v ${PWD}:/usr/src/app --network=testnode_default --rm node npm run mocha",
+    "test": "jest --coverage",
     "mocha": "mocha",
     "dev": "nodemon app.js",
     "development": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
