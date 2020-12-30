@@ -8,4 +8,4 @@ credentials.json
 token.json
 /https
 globalConfig.json
-/coverage
+**/coverage

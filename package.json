@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "docker-test": "docker run --workdir /usr/src/app -v ${PWD}:/usr/src/app --network=testnode_default --rm node npm run mocha",
-    "test": "jest --coverage",
+    "test": "jest --config=test/jest.config.js",
     "mocha": "mocha",
     "dev": "nodemon app.js",
     "development": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
