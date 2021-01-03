@@ -9,11 +9,11 @@ describe('Hello World', function() {
      * Needs to use async function or the result could be wrong.
      * Since the following tests won't wait for the DB to be connected.
      * */
-    before(async function() {
-        await initDB();
+    beforeAll(async function() {
+        await initDB('mongodb://192.168.56.101:27017/');
     });
 
-    after(function() {
+    afterAll(function() {
         server.close();
         closeDB();
     });
@@ -24,6 +24,7 @@ describe('Hello World', function() {
         .send({ query: '{ entriesWithinCategories(timeStartInput: "2020-11-02", timeEndInput: "2020-11-03"){ total } }' })
         .expect(200)
         .end((err, res) => {
+            console.log(res.body);
             if (err) return done(err);
             res.body.data.entriesWithinCategories.total.should.equal(220);
             done();
