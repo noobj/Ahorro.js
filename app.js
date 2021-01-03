@@ -56,7 +56,7 @@ if (!module.parent) {
                 }
                 else {
                     console.log(`HTTPS server OK`);
-                    initDB();
+                    initDB("mongodb://mongo:27017/");
                 }
             });
     }

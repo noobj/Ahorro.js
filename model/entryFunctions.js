@@ -10,7 +10,7 @@ let db  =  null;
 async function initDB(url) {
   if (!db)
   {
-    url = url ? url : "mongodb://mongo:27017/";
+    url = url ? url : "";
     client  = new MongoClient(url, { useNewUrlParser: true, useUnifiedTopology: true  });
     db = await new Promise( (resolve, reject) =>
       client.connect((err) =>
