@@ -37,8 +37,8 @@ async function closeDB() {
 
 // Get the entries data from mongoDB and organize it.
 async function getCategorySummary(root, {timeStartInput, timeEndInput, entriesSortByDate, categoriesExclude}) {
-    // Set the time range, if the date format is wrong then get the previous 3 months
-    let timeStart = moment(timeStartInput, 'YYYY-MM-DD', true).isValid() ? timeStartInput : moment().add(-90, 'days').toISOString();
+    // Set the time range, if the date format is wrong then get the previous 30 days
+    let timeStart = moment(timeStartInput, 'YYYY-MM-DD', true).isValid() ? timeStartInput : moment().add(-30, 'days').toISOString();
     let timeEnd = moment(timeEndInput, 'YYYY-MM-DD', true).isValid() ?timeEndInput : moment().add(0, 'days').toISOString();
     categoriesExclude = categoriesExclude ? categoriesExclude : [];
 

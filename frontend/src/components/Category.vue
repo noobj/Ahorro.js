@@ -1,11 +1,12 @@
 <template>
   <div  @mouseover="active = true" @mouseleave="active = false" >
-    <input title="Exclude this category" v-show="active" type="image" src="../trashcan.png" style="float: left" @click="onClickButton(category._id)" />
-    <h4 :style="{ color: category.color }" @click="toggle = !toggle">
-      {{ category.name }} - {{ category.percentage }}%
-      {{ category.sum | toCurrency }}
-    </h4>
-    <Entries v-if="toggle" :entries="category.entries"></Entries>
+    <div :style="{ color: category.color }" class="cat" @click="$emit('active-category', category._id)">
+        <span>{{ category.name }}</span>
+        <span>{{ category.percentage }}%</span>
+        <span>{{ category.sum | toCurrency }}</span>
+        <input title="Exclude this category" v-show="active" type="image" src="../trashcan.png" style="float: left" @click="onClickButton(category._id)" />
+    </div>
+    <Entries v-if="activeCat === category._id" :entries="category.entries"></Entries>
   </div>
 </template>
 
@@ -20,6 +21,7 @@ export default {
   props: {
     category: Object,
     total: Number,
+    activeCat: Number
   },
   methods: {
     // Emit event to the parent for exclude this category.
@@ -35,3 +37,15 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+div.cat {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    font-size: 21px;
+    font-weight: bold;
+}
+div.cat:hover > input {
+    background: #666;
+}
+</style>

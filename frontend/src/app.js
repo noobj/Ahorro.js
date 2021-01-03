@@ -41,12 +41,13 @@ new Vue({
         return {
             categories: null,
             total: 0,
-            start:  moment().add(-90, 'days').format('YYYY-MM-DD'),
+            start:  moment().add(-30, 'days').format('YYYY-MM-DD'),
             end: moment().add(0, 'days').format('YYYY-MM-DD'),
             datacollection: {},
             randomColorsArr: null,
             entriesSortByDate: false,
-            categoriesExclude: []
+            categoriesExclude: [],
+            activeCat: -1
         }
     },
     apollo: {
@@ -128,6 +129,10 @@ new Vue({
         },
         excludeCategory: function (id) {
             this.categoriesExclude.push(id.toString());
+        },
+        activeCategory: function (id) {
+            if(this.activeCat === id) id = -1;
+            this.activeCat = id;
         }
     }
 })
