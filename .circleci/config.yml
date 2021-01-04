@@ -7,6 +7,8 @@ jobs:
       name: node/default
       tag: '13.14'
     steps:
+      - run:
+          command: COVERALLS_REPO_TOKEN=Cfv7OXRCkb6mGP5Y1gmtrFZfiyB16wTMD bundle exec rspec spec
       - checkout
       - node/install-packages
       - run:
