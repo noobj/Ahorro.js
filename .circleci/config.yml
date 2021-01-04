@@ -11,6 +11,7 @@ jobs:
       - node/install-packages
       - run:
           command: npm run test
+      - run: mkdir test-results
       - store_test_results:
           path: test-results
 
