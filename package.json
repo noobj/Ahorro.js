@@ -41,6 +41,7 @@
   "devDependencies": {
     "@shelf/jest-mongodb": "^1.2.3",
     "chai": "^4.2.0",
+    "coveralls": "^3.1.0",
     "cross-env": "^7.0.3",
     "jest": "^26.6.3",
     "laravel-mix": "^5.0.9",

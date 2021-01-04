@@ -8,12 +8,12 @@ jobs:
       tag: '13.14'
     steps:
       - run:
-          command: COVERALLS_REPO_TOKEN=Cfv7OXRCkb6mGP5Y1gmtrFZfiyB16wTMD
+          command: export COVERALLS_REPO_TOKEN=Cfv7OXRCkb6mGP5Y1gmtrFZfiyB16wTMD
       - checkout
       - node/install-packages
       - run:
-          command: npm run test
-      - store_test_results:
+          command: ./node_modules/jest/bin/jest.js --config=test/jest.config.js && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage
+      - store_artifacts:
           path: coverage
 
 workflows:
