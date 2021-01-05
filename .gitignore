@@ -9,3 +9,4 @@ token.json
 /https
 globalConfig.json
 **/coverage
+**/out

@@ -7,6 +7,11 @@ const moment = require('moment');
 let client = null;
 let db  =  null;
 
+/**
+ * Initialize Database.
+ * @param {string} url
+ * @returns {object}
+ */
 async function initDB(url) {
   if (!db)
   {
@@ -27,6 +32,9 @@ async function initDB(url) {
   return db;
 }
 
+/**
+ * Shutdown Database.
+ */
 async function closeDB() {
     if (db) {
       await client.close()
@@ -34,7 +42,16 @@ async function closeDB() {
     }
   }
 
-// Get the entries data from mongoDB and organize it.
+/**
+ * Get the entries data from mongoDB and organize it.
+ * @param {*} root
+ * @param {object} [param1]
+ * @param {string} [param1.timeStartInput]
+ * @param {string} [param1.timeEndInput]
+ * @param {boolean} [param1.entriesSortByDate]
+ * @param {Array} [param1.categoriesExclude]
+ * @returns {object}
+ */
 async function getCategorySummary(root, {timeStartInput, timeEndInput, entriesSortByDate, categoriesExclude}) {
     // Set the time range, if the date format is wrong then get the previous 30 days
     let timeStart = moment(timeStartInput, 'YYYY-MM-DD', true).isValid() ? timeStartInput : moment().add(-30, 'days').toISOString();
