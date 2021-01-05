@@ -1,5 +1,7 @@
 # Ahorro.js
-
+![CircleCI](https://img.shields.io/circleci/build/github/noobj/Ahorro.js)
+![Coveralls github](https://img.shields.io/coveralls/github/noobj/Ahorro.js?color=yellow)
+![GitHub](https://img.shields.io/github/license/noobj/Ahorro.js?color=blue)
 <!-- TABLE OF CONTENTS -->
 <details open="open">
   <summary>Table of Contents</summary>
