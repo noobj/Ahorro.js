@@ -80,6 +80,7 @@ new Vue({
                 categoriesExclude: this.categoriesExclude
             };
           },
+          fetchPolicy: 'network-only',
           async result (result) {
             this.categories = await result.data.entriesWithinCategories.categories;
             this.total = result.data.entriesWithinCategories.total;
@@ -133,6 +134,14 @@ new Vue({
         activeCategory: function (id) {
             if(this.activeCat === id) id = -1;
             this.activeCat = id;
-        }
+        },
+        lastMonth: function () {
+            this.start =  moment(this.end).subtract(1, 'months').startOf('month').format('YYYY-MM-DD');
+            this.end = moment(this.end).subtract(1, 'months').endOf('month').format('YYYY-MM-DD');
+        },
+        nextMonth: function () {
+            this.start =  moment(this.end).add(1, 'months').startOf('month').format('YYYY-MM-DD');
+            this.end = moment(this.end).add(1, 'months').endOf('month').format('YYYY-MM-DD');
+        },
     }
 })
