@@ -138,10 +138,14 @@ new Vue({
         lastMonth: function () {
             this.start =  moment(this.end).subtract(1, 'months').startOf('month').format('YYYY-MM-DD');
             this.end = moment(this.end).subtract(1, 'months').endOf('month').format('YYYY-MM-DD');
+            this.categoriesExclude = [];
+            this.activeCat = -1;
         },
         nextMonth: function () {
             this.start =  moment(this.end).add(1, 'months').startOf('month').format('YYYY-MM-DD');
             this.end = moment(this.end).add(1, 'months').endOf('month').format('YYYY-MM-DD');
+            this.categoriesExclude = [];
+            this.activeCat = -1;
         },
     }
 })
