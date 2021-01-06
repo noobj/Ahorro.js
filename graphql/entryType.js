@@ -16,7 +16,8 @@ const typeDefs = gql`
         name: String,
         entries: [Entry],
         sum: Int,
-        percentage: Float
+        percentage: Float,
+        color: String
     }
 
     type Entry {

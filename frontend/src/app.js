@@ -62,6 +62,7 @@ new Vue({
                         name
                         sum
                         percentage
+                        color
                         entries {
                             amount
                             date
@@ -87,24 +88,18 @@ new Vue({
 
             let categoryNames = this.categories.map(v => v.name);
             let categoryPercent = this.categories.map(v => v.percentage);
+            let categoryColors = this.categories.map(v => v.color);
 
-            this.randomColorsArr = await this.randomColors(categoryNames.length);
             this.datacollection = {
                 labels: categoryNames,
                 datasets: [
                     {
                         label: 'Data One',
-                        backgroundColor: this.randomColorsArr,
+                        backgroundColor: categoryColors,
                         data: categoryPercent
                     }
                 ]
             };
-
-            return this.categories = this.categories.map((category, index) => {
-                // Need to use Vue.set since Vue doesn't detect object property addition
-                Vue.set(category, 'color', this.randomColorsArr[index]);
-                return category;
-            });
           }
         }}
     },
