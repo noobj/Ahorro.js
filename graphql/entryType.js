@@ -3,7 +3,13 @@ const { ApolloServer, gql } = require('apollo-server-koa');
 
 const typeDefs = gql`
     type Query  {
-        entriesWithinCategories(timeStartInput: String, timeEndInput: String, entriesSortByDate: Boolean, categoriesExclude: [String]): EntryCateSummary
+        entriesWithinCategories(timeStartInput: String, timeEndInput: String, entriesSortByDate: Boolean, categoriesExclude: [String]): EntryCateSummary,
+        monthlySum(year: String): [MonthlySum]
+    }
+
+    type MonthlySum {
+        month: String,
+        sum: Int
     }
 
     type EntryCateSummary {

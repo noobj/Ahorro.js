@@ -1,6 +1,6 @@
 const { MongoClient } = require('mongodb');
 const fs = require('fs');
-const { initDB, closeDB, getCategorySummary } = require('../model/entryFunctions');
+const { initDB, closeDB, getCategorySummary, getSumMonthly } = require('../model/entryFunctions');
 
 describe('Test connection error', () => {
 
@@ -80,5 +80,11 @@ describe('Test entry model', () => {
         const result = await getCategorySummary(null, {});
 
         expect(result).toHaveProperty('total');
+    });
+
+    it('should get the December sum of 2020', async () => {
+        result = await getSumMonthly(null, { year: "2020"});
+
+        expect(result[0].sum).toEqual(27792);
     });
 });

@@ -1,9 +1,10 @@
 const { ApolloServer } = require('apollo-server-koa');
-const { getCategorySummary } = require('../model/entryFunctions');
+const { getCategorySummary, getSumMonthly } = require('../model/entryFunctions');
 
 const resolvers = {
   Query: {
-    entriesWithinCategories:  getCategorySummary
+    entriesWithinCategories:  getCategorySummary,
+    monthlySum: getSumMonthly
   },
 }
 module.exports = resolvers;

@@ -51,7 +51,6 @@ new Vue({
         }
     },
     apollo: {
-        // Simple query that will update the 'hello' vue property
         entriesWithinCategories() {
             return {
          query: gql`
