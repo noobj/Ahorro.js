@@ -46,7 +46,7 @@ async function closeDB() {
  * @param {*} param1
  * @param {string} [param1.year]
  */
-async function getSumMonthly(root, {year}) {
+async function getSumMonthly(root, { year }) {
     // Set the time range, if the date format is wrong then get the previous 30 days
     let timeStart = moment(`${year}-01-01`).toISOString();
     let timeEnd = moment(`${year}-12-31 23:59:59`).toISOString();
@@ -59,15 +59,35 @@ async function getSumMonthly(root, {year}) {
                 sum: { $sum: "$amount" }
             }
         },
-        { $sort : { _id : 1 } }
+        { $sort: { _id: 1 } }
     ]).toArray();
 
+    // Insert the month without entries with sum = 0
+    for (let i = 1; i <= 12; i++) {
+        if(i < 10) i = '0' + i;
+        let dateStr = `${year}-${i}`;
+        let isExist = result.findIndex(v => {
+            if(v._id == dateStr) return true;
+        });
+
+        if(isExist === -1) {
+            result.push({_id: dateStr, sum: 0});
+        }
+    }
+
+    // Sort the result by month
+    result.sort((a, b) => {
+        if( a._id > b._id) return 1;
+        else return -1;
+    })
+
+    // Turn the _id into month and readable format
     result = result.map(v => {
         return {
             month: moment(v._id).format('MMMM'),
             sum: v.sum
         }
-    })
+    });
 
     return result;
 }

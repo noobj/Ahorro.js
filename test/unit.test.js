@@ -84,7 +84,6 @@ describe('Test entry model', () => {
 
     it('should get the December sum of 2020', async () => {
         result = await getSumMonthly(null, { year: "2020"});
-
-        expect(result[0].sum).toEqual(27792);
+        expect(result[5].sum).toEqual(27792);
     });
 });
