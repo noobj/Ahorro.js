@@ -18,10 +18,15 @@
         <b-button size="sm" pill variant="warning" @click="entriesSortByDate = !entriesSortByDate" style="font-weight:bold;">{{ entriesSortByDate ? 'Date' : 'Amount' }}</b-button>
         <b-button size="sm" pill variant="primary" @click="lastMonth()" style="font-weight:bold;">Last Month</b-button>
         <b-button size="sm" pill variant="info" @click="nextMonth()" style="font-weight:bold;">Next Month</b-button>
+        <b-button size="sm" pill variant="success" @click="skipQuery = !skipQuery" style="font-weight:bold;">2020</b-button>
         <input title="Click to sync newest entries from Google drive." type="image" src="./google_drive.png" @click="loadNewData()" style="width: 40; position: absolute; right: 5px;"/>
     </div>
     <h1>Total: {{ total|toCurrency }}</h1>
     <h1 v-if="$apollo.loading">Loading...</h1>
+
+    <div>
+        <Yearlychart  v-if="!skipQuery" :style="myStyles" :chart-data="yearlyCollection" :options="options"></YearlyChart>
+    </div>
     <div style="max-width: 600px; margin: 75px; float: left;">
         <Chart :chart-data="datacollection"></Chart>
     </div>
