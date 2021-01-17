@@ -186,14 +186,26 @@ new Vue({
         lastMonth: function () {
             this.start = moment(this.end).subtract(1, 'months').startOf('month').format('YYYY-MM-DD');
             this.end = moment(this.end).subtract(1, 'months').endOf('month').format('YYYY-MM-DD');
+            this.skipQuery = true;
             this.categoriesExclude = [];
             this.activeCat = -1;
         },
         nextMonth: function () {
             this.start = moment(this.end).add(1, 'months').startOf('month').format('YYYY-MM-DD');
             this.end = moment(this.end).add(1, 'months').endOf('month').format('YYYY-MM-DD');
+            this.yearDisplay = moment(this.end).endOf('year').format('YYYY');
+            this.skipQuery = true;
             this.categoriesExclude = [];
             this.activeCat = -1;
         },
+        yearlyDisplay: function() {
+            if(this.skipQuery) {
+                this.start = moment(this.end).startOf('year').format('YYYY-MM-DD');
+                this.end = moment(this.end).endOf('year').format('YYYY-MM-DD');
+                this.yearDisplay = moment(this.end).endOf('year').format('YYYY');
+            }
+
+            this.skipQuery = !this.skipQuery;
+        }
     }
 })
