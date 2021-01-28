@@ -42,8 +42,8 @@ new Vue({
         return {
             categories: null,
             total: 0,
-            start: moment().add(-30, 'days').format('YYYY-MM-DD'),
-            end: moment().add(0, 'days').format('YYYY-MM-DD'),
+            start: moment().startOf('month').format('YYYY-MM-DD'),
+            end: moment().endOf('month').format('YYYY-MM-DD'),
             datacollection: {},
             randomColorsArr: null,
             entriesSortByDate: false,
@@ -184,19 +184,34 @@ new Vue({
             this.activeCat = id;
         },
         lastMonth: function () {
-            this.start = moment(this.end).subtract(1, 'months').startOf('month').format('YYYY-MM-DD');
-            this.end = moment(this.end).subtract(1, 'months').endOf('month').format('YYYY-MM-DD');
+            if(this.isSameMonth()) {
+                this.start = moment(this.end).subtract(1, 'months').startOf('month').format('YYYY-MM-DD');
+                this.end = moment(this.end).subtract(1, 'months').endOf('month').format('YYYY-MM-DD');
+            } else {
+                this.start = moment(this.start).startOf('month').format('YYYY-MM-DD');
+                this.end = moment(this.start).endOf('month').format('YYYY-MM-DD');
+            }
+
             this.skipQuery = true;
             this.categoriesExclude = [];
             this.activeCat = -1;
         },
         nextMonth: function () {
-            this.start = moment(this.end).add(1, 'months').startOf('month').format('YYYY-MM-DD');
-            this.end = moment(this.end).add(1, 'months').endOf('month').format('YYYY-MM-DD');
+            if(this.isSameMonth()) {
+                this.start = moment(this.end).add(1, 'months').startOf('month').format('YYYY-MM-DD');
+                this.end = moment(this.end).add(1, 'months').endOf('month').format('YYYY-MM-DD');
+            } else {
+                this.start = moment(this.end).startOf('month').format('YYYY-MM-DD');
+                this.end = moment(this.end).endOf('month').format('YYYY-MM-DD');
+            }
+
             this.yearDisplay = moment(this.end).endOf('year').format('YYYY');
             this.skipQuery = true;
             this.categoriesExclude = [];
             this.activeCat = -1;
+        },
+        isSameMonth: function () {
+            return moment(this.start).format('MM') === moment(this.end).format('MM');
         },
         yearlyDisplay: function() {
             if(this.skipQuery) {
